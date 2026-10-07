@@ -62,6 +62,13 @@ class HorseRaces:
 
         race_dict = {}
         for row in table[1:]:
+            horse_name = row[0]
+            race_dict[horse_name] = {}
+            for i in range(1, len(row)):
+                race_name = header[i]
+                race_time = float(row[i])
+                race_dict[horse_name][race_name] = race_time
+        return race_dict
 
 ###############################################################################
 ##### TASK 2
@@ -79,7 +86,19 @@ class HorseRaces:
             tuple of fastest race name and the time
             EXAMPLE: ('Teio Sho', 14.8)
         '''
-        pass
+
+        fastest_race = None
+        fastest_time = 999.9
+
+        if horse in self.race_dict:
+            return fastest_race, fastest_time
+
+        horse_races = self.race_dict[horse]
+        for race, time in horse_races.items():
+            if time < fastest_time:
+                fastest_time = time
+                fastest_race = race
+        return fastest_race, fastest_time
 
 ###############################################################################
 ##### TASK 3
@@ -93,7 +112,11 @@ class HorseRaces:
             A dictionary of tuples of each horse, with their fastest race and time.
             EXAMPLE: {"Oguri Cap": ("Tenno Sho Fall", 16.6), "Mejiro McQueen": ("Tenno Sho Fall", 16.1)}
         '''
-        pass
+        horses_fastest = {}
+
+        for horse_name in self.race_dict.keys():
+            horses_fastest[horse_name] = self.horse_fastest_race(horse_name)
+        return horses_fastest
 
 ###############################################################################
 ##### TASK 4
@@ -107,7 +130,14 @@ class HorseRaces:
             A dictionary with each horse and their average time.
             EXAMPLE: {'Gold Ship': 16.5, 'Daiwa Scarlet': 17.2}
         '''
-        pass
+        horses_average = {}
+
+        for horse_name, races in self.race_dict.items():
+            sum = 0.0
+            for race_name, race_time in races.items():
+                sum += race_time
+            average_time = sum / len(races)
+            horses_average[horse_name] = average_time
 
 ###############################################################################
 ##### DO NOT MODIFY THE UNIT TESTS BELOW!
